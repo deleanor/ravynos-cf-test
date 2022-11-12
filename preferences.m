@@ -2,20 +2,16 @@
 
 #include <stdio.h>
 
-CFStringRef createString(const char *value) {
-	return CFStringCreateWithCString(NULL, value, kCFStringEncodingASCII);
-}
-
 int main(int argc, char *argv[]) {
 	CFPreferencesSetValue(
-		createString("key"),
-		createString("value"),
-		createString("appId"),
+		CFSTR("key"),
+		CFSTR("value"),
+		CFSTR("appId"),
 		kCFPreferencesCurrentUser,
 		kCFPreferencesCurrentHost);
 	CFPropertyListRef roundtrip = CFPreferencesCopyValue(
-		createString("key"),
-		createString("appId"),
+		CFSTR("key"),
+		CFSTR("appId"),
 		kCFPreferencesCurrentUser,
 		kCFPreferencesCurrentHost);
 
