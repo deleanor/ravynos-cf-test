@@ -3,26 +3,23 @@
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-	CFPreferencesSetValue(
-		CFSTR("key"),
-		CFSTR("value"),
-		CFSTR("appId"),
-		kCFPreferencesCurrentUser,
-		kCFPreferencesCurrentHost);
-	CFPropertyListRef roundtrip = CFPreferencesCopyValue(
-		CFSTR("key"),
-		CFSTR("appId"),
-		kCFPreferencesCurrentUser,
-		kCFPreferencesCurrentHost);
 
-	char outValue[256];
-	CFStringGetCString(
-		(CFStringRef)roundtrip,
-		outValue,
-		256,
-		kCFStringEncodingASCII);
+    CFPreferencesSetAppValue(CFSTR("key"), CFSTR("value"), kCFPreferencesCurrentApplication);
+
+    if (!CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication)) {
+        printf("Failed to synchronize preferences.\n");
+        return 1;
+    }
+    
+    CFPropertyListRef readValue = CFPreferencesCopyAppValue(CFSTR("key"), kCFPreferencesCurrentApplication);
 	
-	printf("Returned value: %s\n", outValue);
-		
-	return 0;
+	if (readValue == NULL) {
+        printf("Preference value not found\n");
+        return 1;
+	} else {
+        char outValue[256];
+        CFStringGetCString((CFStringRef)readValue,outValue, 256, kCFStringEncodingASCII);
+        printf("Returned value: %s\n", outValue);
+        return 0;
+    }
 }

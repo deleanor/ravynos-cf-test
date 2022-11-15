@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-g -O0 -D__APPLE__ -fblocks -F /System/Library/Frameworks -framework CoreFoundation -fobjc-arc
+CFLAGS=-g -O0 -D__APPLE__ -DDEBUG -fblocks -F /System/Library/Frameworks -framework CoreFoundation -fobjc-arc
 
 
 all: runloop preferences
